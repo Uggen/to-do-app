@@ -19,8 +19,8 @@ public class TaskDao implements Dao<Long, TaskEntity> {
             WHERE id = ?
             """;
     public static final String SAVE_SQL = """
-            INSERT INTO tasks (id, title, description, status, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO tasks (title, description, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?)
             """;
     public static final String UPDATE_SQL = """
             UPDATE tasks
@@ -104,12 +104,11 @@ public class TaskDao implements Dao<Long, TaskEntity> {
         try (var connection = ConnectionPool.get();
              var preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setLong(1, entity.getId());
-            preparedStatement.setString(2, entity.getTitle());
-            preparedStatement.setString(3, entity.getDescription());
-            preparedStatement.setObject(4, entity.getStatus());
-            preparedStatement.setObject(5, entity.getCreated_at());
-            preparedStatement.setObject(6, entity.getUpdated_at());
+            preparedStatement.setString(1, entity.getTitle());
+            preparedStatement.setString(2, entity.getDescription());
+            preparedStatement.setObject(3, entity.getStatus().name(), Types.OTHER);
+            preparedStatement.setObject(4, entity.getCreated_at());
+            preparedStatement.setObject(5, entity.getUpdated_at());
 
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
@@ -147,5 +146,9 @@ public class TaskDao implements Dao<Long, TaskEntity> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    public static TaskDao getInstance() {
+        return INSTANCE;
     }
 }
