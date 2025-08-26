@@ -33,7 +33,14 @@ public class Service {
         System.out.println("Задача создана");
     }
 
+    public static void searchTask(TaskEntity taskStatus) {
+        var instance = TaskDao.getInstance();
+        instance.filterByStatus(taskStatus);
+    }
+
     public static void searchTasks() {
+        var instance = TaskDao.getInstance();
+        instance.findAll();
     }
 
     public static void updateTask() {

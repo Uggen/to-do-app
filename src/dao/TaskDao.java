@@ -43,6 +43,9 @@ public class TaskDao implements Dao<Long, TaskEntity> {
     public static final String FIND_BY_ID_SQL = FIND_ALL_SQL+  """
             WHERE id = ?
             """;
+    public static final String FIND_BY_STATUS_SQL = FIND_ALL_SQL+  """
+            WHERE status = ?
+            """;
 
     @Override
     public List<TaskEntity> findAll() {
@@ -52,12 +55,18 @@ public class TaskDao implements Dao<Long, TaskEntity> {
             List<TaskEntity> tasks = new ArrayList<>();
             while (result.next()){
                 tasks.add(buildTasks(result));
+                System.out.println("| " + result.getLong("id") +
+                        " | " + result.getString("title") + " | " +
+                        result.getString("description") + " | " +
+                        TaskStatus.valueOf(result.getString("status")) + " | " +
+                        result.getObject("created_at", LocalDateTime.class) + " | " +
+                        result.getObject("updated_at", LocalDateTime.class) + " | ");
+                System.out.println("------------------------------");
             }
-
+            return tasks;
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        return List.of();
     }
 
     private TaskEntity buildTasks(ResultSet result) {
@@ -66,10 +75,29 @@ public class TaskDao implements Dao<Long, TaskEntity> {
                     result.getLong("id"),
                     result.getString("title"),
                     result.getString("description"),
-                    result.getObject("status", TaskStatus.class),
+                    TaskStatus.valueOf(result.getString("status")),
                     result.getObject("created_at", LocalDateTime.class),
                     result.getObject("updated_at", LocalDateTime.class)
             );
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public void filterByStatus(TaskEntity taskEntity) {
+        try (var connection = ConnectionPool.get();
+             var preparedStatement = connection.prepareStatement(FIND_BY_STATUS_SQL)) {
+            preparedStatement.setObject(1, taskEntity.getStatus().name(), Types.OTHER);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()){
+                System.out.println("| " + result.getLong("id") +
+                        " | " + result.getString("title") + " | " +
+                        result.getString("description") + " | " +
+                        TaskStatus.valueOf(result.getString("status")) + " | " +
+                        result.getObject("created_at", LocalDateTime.class) + " | " +
+                        result.getObject("updated_at", LocalDateTime.class) + " | ");
+                System.out.println("------------------------------");
+            }
         } catch (SQLException e) {
             throw new DaoException(e);
         }

@@ -1,5 +1,7 @@
 package app;
 
+import entity.TaskEntity;
+import entity.TaskStatus;
 import service.Service;
 
 import java.util.Scanner;
@@ -18,11 +20,56 @@ public class App {
         int choose = scanner.nextInt();
 
         switch (choose) {
-            case 1 -> Service.createTask();
-            case 2 -> Service.searchTasks();
-            case 3 -> Service.updateTask();
-            case 4 -> Service.deleteTask();
-            default -> System.out.println("Выберите один из пунктов в меню");
+            case 1:
+                Service.createTask();
+                break;
+            case 2:
+                System.out.println("Выберите опцию:\n" +
+                        "1: Вывести все задачи\n" +
+                        "2: Отфильтровать по статусу\n" +
+                        "3: Отсортировать по дате");
+                Scanner input = new Scanner(System.in);
+                switch (input.nextInt()) {
+                    case 1:
+                        Service.searchTasks();
+                        break;
+                    case 2:
+                        var task = new TaskEntity();
+                        System.out.println("Введите статус: \n" +
+                                "1: NEW\n" +
+                                "2: IN_PROGRESS\n" +
+                                "3: DONE\n");
+                        switch (input.nextInt()) {
+                            case 1:
+                                task.setStatus(TaskStatus.NEW);
+                                Service.searchTask(task);
+                                break;
+                            case 2:
+                                task.setStatus(TaskStatus.IN_PROGRESS);
+                                Service.searchTask(task);
+                                break;
+                            case 3:
+                                task.setStatus(TaskStatus.DONE);
+                                Service.searchTask(task);
+                                break;
+                            default:
+                                System.out.println("Выберите один из пунктов в меню");
+                        }
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        System.out.println("Выберите один из пунктов в меню");
+                        Service.searchTasks();
+                }
+            case 3:
+                Service.updateTask();
+                break;
+            case 4:
+                Service.deleteTask();
+                break;
+            default:
+                System.out.println("Выберите один из пунктов в меню");
         }
     }
 }
