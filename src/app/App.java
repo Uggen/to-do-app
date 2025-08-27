@@ -4,6 +4,7 @@ import entity.TaskEntity;
 import entity.TaskStatus;
 import service.Service;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -16,19 +17,18 @@ public class App {
                 "2: Посмотреть заведенные задачи\n " +
                 "3: Обновить задачу\n " +
                 "4: Удалить задачу");
-        Scanner scanner = new Scanner(System.in);
-        int choose = scanner.nextInt();
-
-        switch (choose) {
+        Scanner input = new Scanner(System.in);
+        switch (input.nextInt()) {
             case 1:
+                System.out.println("Чтобы создать задачу введите текст задачи:");
                 Service.createTask();
+                System.out.println("Задача создана");
                 break;
             case 2:
                 System.out.println("Выберите опцию:\n" +
                         "1: Вывести все задачи\n" +
                         "2: Отфильтровать по статусу\n" +
                         "3: Отсортировать по дате");
-                Scanner input = new Scanner(System.in);
                 switch (input.nextInt()) {
                     case 1:
                         Service.searchTasks();
@@ -57,16 +57,28 @@ public class App {
                         }
                         break;
                     case 3:
+                        var sortedByDate = Service.searchTasksByDate();
+                        System.out.println(sortedByDate);
                         break;
                     default:
                         System.out.println("Выберите один из пунктов в меню");
                         Service.searchTasks();
                 }
             case 3:
-                Service.updateTask();
+                Service.searchTasks();
+                var nextLong = input.nextLong();
+                var nextString = input.next();
+                var result = Service.updateTask(nextLong, nextString);
+                if (result) {
+                    System.out.println("Задача обновлена");
+                } else {
+                    System.out.println("Задача не обновлена");
+                }
                 break;
             case 4:
-                Service.deleteTask();
+                Service.searchTasks();
+                var nextDel = input.nextLong();
+                Service.deleteTask(nextDel);
                 break;
             default:
                 System.out.println("Выберите один из пунктов в меню");

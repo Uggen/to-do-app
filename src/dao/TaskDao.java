@@ -55,13 +55,13 @@ public class TaskDao implements Dao<Long, TaskEntity> {
             List<TaskEntity> tasks = new ArrayList<>();
             while (result.next()){
                 tasks.add(buildTasks(result));
-                System.out.println("| " + result.getLong("id") +
-                        " | " + result.getString("title") + " | " +
-                        result.getString("description") + " | " +
-                        TaskStatus.valueOf(result.getString("status")) + " | " +
-                        result.getObject("created_at", LocalDateTime.class) + " | " +
-                        result.getObject("updated_at", LocalDateTime.class) + " | ");
-                System.out.println("------------------------------");
+//                System.out.println("| " + result.getLong("id") +
+//                        " | " + result.getString("title") + " | " +
+//                        result.getString("description") + " | " +
+//                        TaskStatus.valueOf(result.getString("status")) + " | " +
+//                        result.getObject("created_at", LocalDateTime.class) + " | " +
+//                        result.getObject("updated_at", LocalDateTime.class) + " | ");
+//                System.out.println("------------------------------");
             }
             return tasks;
         } catch (SQLException e) {
