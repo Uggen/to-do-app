@@ -1,6 +1,6 @@
-package dao;
+package io.github.uggen.dao;
 
-import util.PropertiesUtil;
+import io.github.uggen.util.PropertiesUtil;
 
 import java.lang.reflect.Proxy;
 import java.sql.Connection;

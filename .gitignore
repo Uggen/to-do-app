@@ -40,3 +40,8 @@ bin/
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

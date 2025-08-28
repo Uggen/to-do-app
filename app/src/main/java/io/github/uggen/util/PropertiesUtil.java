@@ -1,4 +1,4 @@
-package util;
+package io.github.uggen.util;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -20,7 +20,7 @@ public final class PropertiesUtil {
     }
 
     private static void loadProperties() {
-        try (var stream = PropertiesUtil.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (var stream = PropertiesUtil.class.getClassLoader().getResourceAsStream("app/src/main/resources/application.properties")) {
             PROPERTIES.load(stream);
         } catch (IOException e) {
             throw new RuntimeException(e);

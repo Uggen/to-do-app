@@ -1,6 +1,8 @@
-package dao;
+package io.github.uggen.dao;
 
-import java.sql.ResultSet;
+import io.github.uggen.entity.TaskEntity;
+import io.github.uggen.entity.TaskStatus;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +14,7 @@ public interface Dao<K, T> {
 
     T save(T entity);
 
-    void update(T entity);
-
     void delete(K id);
+
+    List<TaskEntity> filterByStatus(TaskStatus taskStatus);
 }
